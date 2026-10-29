@@ -53,7 +53,7 @@
       padding-bottom: 95px;
     }
 
-    /* شريط توثيق الشريحة الذكية */
+    /* شريط التوثيق NFC */
     .nfc-banner {
       display: flex;
       align-items: center;
@@ -91,13 +91,13 @@
       letter-spacing: 1px;
     }
 
-    /* منصة عرض التيشيرت */
+    /* منصة عرض الإطلالة للصور الطولية */
     .product-stage {
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,7 +106,7 @@
     }
     .tshirt-viewport {
       width: 100%;
-      height: 310px;
+      height: 400px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -137,27 +137,29 @@
       transform: rotateY(180deg);
     }
     .tshirt-side img {
-      max-width: 90%;
-      max-height: 280px;
-      object-fit: contain;
-      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.65));
+      max-width: 100%;
+      max-height: 390px;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
     }
     .view-toggle-btn {
-      margin-top: 8px;
+      margin-top: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: var(--gold);
-      padding: 7px 16px;
+      padding: 8px 18px;
       border-radius: 30px;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
     }
 
-    /* مستشار المظهر الذكي */
+    /* مستشار المظهر الذكي (AI Stylist) */
     .stylist-container {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -275,7 +277,7 @@
       line-height: 1.35;
     }
 
-    /* مقاسات التيشيرت */
+    /* اختيار المقاس */
     .size-picker {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -362,17 +364,17 @@
       <span class="serial-number">MASMAK-001/EZWA</span>
     </div>
 
-    <!-- منصة التيشيرت الحركية -->
+    <!-- منصة العرض الحركية -->
     <div class="product-stage">
       <div class="tshirt-viewport">
         <div class="tshirt-card" id="tshirtCard">
-          <!-- الوجه الأمامي (front.jpeg) -->
+          <!-- الوجه الأمامي (model-front.png) -->
           <div class="tshirt-side front">
-            <img id="frontImg" src="front.jpeg" alt="واجهة تيشيرت قصر المصمك">
+            <img id="frontImg" src="model-front.png" alt="واجهة تيشيرت قصر المصمك">
           </div>
-          <!-- الوجه الخلفي (back.jpeg) -->
+          <!-- الوجه الخلفي (model-back.png) -->
           <div class="tshirt-side back">
-            <img id="backImg" src="back.jpeg" alt="ظهر تيشيرت قصر المصمك">
+            <img id="backImg" src="model-back.png" alt="ظهر تيشيرت قصر المصمك">
           </div>
         </div>
       </div>
@@ -522,7 +524,7 @@
       }
     };
 
-    // دالة الصوت المباشرة (تعمل على كل الأجهزة واللابتوب فوراً)
+    // دالة الصوت العربي المباشر عبر المتصفح واللابتوب والجوال
     function speakArabic(text) {
       if (currentAudio) {
         currentAudio.pause();
@@ -616,7 +618,7 @@
       document.getElementById('whatsappOrderBtn').href = `https://wa.me/${whatsappPhone}?text=${encoded}`;
     }
 
-    // التهيئة التلقائية
+    // التهيئة التلقائية عند التحميل
     renderCapsule(stylingData.luxury.capsule);
     updateWhatsappLink();
   </script>
