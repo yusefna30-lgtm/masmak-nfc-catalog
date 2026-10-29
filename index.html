@@ -278,12 +278,12 @@
       transform: scale(0.98);
     }
     .option-btn.correct {
-      background: rgba(40, 167, 69, 0.3);
+      background: rgba(40, 167, 69, 0.35);
       border-color: var(--success);
       color: #fff;
     }
     .option-btn.wrong {
-      background: rgba(220, 53, 69, 0.3);
+      background: rgba(220, 53, 69, 0.35);
       border-color: var(--danger);
       color: #fff;
     }
@@ -536,7 +536,7 @@
     let hasBreached = false;
     const whatsappPhone = '966502777884';
 
-    // محرك صوتي محيطي راقٍ وناعم (Web Audio API)
+    // محرك صوتي محيطي راقٍ وواضح (Web Audio API)
     function playCinematicFx(type) {
       if (!window.AudioContext && !window.webkitAudioContext) return;
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -546,12 +546,38 @@
         const gain = ctx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(320, ctx.currentTime);
-        gain.gain.setValueAtTime(0.03, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.04);
+        osc.stop(ctx.currentTime + 0.05);
+      } else if (type === 'correctClick') {
+        // نقرة خشبية ناعمة ونقية عند اختيار الإجابة الصحيحة
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12); // انتقال لأعلى D5 -> A5
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.14);
+      } else if (type === 'wrongClick') {
+        // نغمة مكتومة توضح الخطأ بنعومة وبدون إزعاج
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(110, ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.2);
       } else if (type === 'breach') {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -702,7 +728,7 @@
       const item = masmakFacts[currentQIndex];
       if (selectedIdx === item.ans) {
         btnElement.classList.add('correct');
-        playCinematicFx('scrape');
+        playCinematicFx('correctClick');
         if (navigator.vibrate) navigator.vibrate(50);
 
         setTimeout(() => {
@@ -721,7 +747,8 @@
         }, 400);
       } else {
         btnElement.classList.add('wrong');
-        if (navigator.vibrate) navigator.vibrate(200);
+        playCinematicFx('wrongClick');
+        if (navigator.vibrate) navigator.vibrate(180);
         setTimeout(() => btnElement.classList.remove('wrong'), 500);
       }
     }
