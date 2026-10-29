@@ -41,7 +41,6 @@
       justify-content: center;
     }
 
-    /* حركة رجة الشاشة عند ضرب الحربة */
     @keyframes screenShake {
       0% { transform: translate(1px, 1px) rotate(0deg); }
       20% { transform: translate(-3px, 0px) rotate(-1deg); }
@@ -182,7 +181,7 @@
       line-height: 1.5;
     }
 
-    /* 1. حركة سحب رأس الحربة إلى 1902 */
+    /* 1. سحب رأس الحربة إلى 1902 */
     .spear-slider-container {
       width: 100%;
       padding: 16px 8px;
@@ -331,7 +330,7 @@
       box-shadow: 0 0 45px rgba(223, 186, 99, 0.9);
     }
 
-    /* 4. البطاقة النهائية المعتمدة */
+    /* 4. البطاقة النهائية */
     .final-pass-card {
       display: none;
       width: 100%;
@@ -454,7 +453,7 @@
     <!-- غرفة التحدي -->
     <div class="quest-card" id="questCard">
       
-      <!-- 1. حركة سحب رأس الحربة إلى 1902 -->
+      <!-- 1. سحب رأس الحربة إلى 1902 -->
       <div id="stageSpearBox" style="width: 100%;">
         <div class="quest-header">
           <span>🗡️</span>
@@ -477,7 +476,7 @@
         </div>
       </div>
 
-      <!-- 2. مرحلة الأسئلة الخمسة لحقائق المصمك -->
+      <!-- 2. الأسئلة الخمسة لحقائق المصمك -->
       <div class="questions-box" id="stageQuestionsBox">
         <div class="quest-header">
           <span>📜</span>
@@ -537,78 +536,61 @@
     let hasBreached = false;
     const whatsappPhone = '966502777884';
 
-    // محرك صوتي محيطي سينمائي (Web Audio API)
+    // محرك صوتي محيطي راقٍ وناعم (Web Audio API)
     function playCinematicFx(type) {
       if (!window.AudioContext && !window.webkitAudioContext) return;
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
       if (type === 'scrape') {
-        // صوت احتكاك معدن الحربة أثناء السحب
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(260 + Math.random() * 80, ctx.currentTime);
-        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, ctx.currentTime);
+        gain.gain.setValueAtTime(0.03, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
         osc.stop(ctx.currentTime + 0.04);
       } else if (type === 'breach') {
-        // ارتطام الحربة القوي وانفراج الباب التراثي
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(180, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(35, ctx.currentTime + 0.7);
-        gain.gain.setValueAtTime(0.8, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.7);
+        osc.frequency.setValueAtTime(140, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(35, ctx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.7);
+        osc.stop(ctx.currentTime + 0.6);
       } else if (type === 'gateOpen') {
-        // المؤثر السينمائي بعد الأسئلة: ريح صحراوية عميقة متبوعة بصرير الخشب
-        // 1. عمق الرياح (Sub-bass drone)
-        const subOsc = ctx.createOscillator();
-        const subGain = ctx.createGain();
-        subOsc.type = 'sine';
-        subOsc.frequency.setValueAtTime(65, ctx.currentTime);
-        subOsc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 2.5);
-        subGain.gain.setValueAtTime(0.7, ctx.currentTime);
-        subGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2.5);
-        subOsc.connect(subGain);
-        subGain.connect(ctx.destination);
-        subOsc.start();
-        subOsc.stop(ctx.currentTime + 2.5);
-
-        // 2. صرير الباب الخشبي الضخم بعد ثانية
-        setTimeout(() => {
-          const woodOsc = ctx.createOscillator();
-          const woodGain = ctx.createGain();
-          woodOsc.type = 'sawtooth';
-          woodOsc.frequency.setValueAtTime(95, ctx.currentTime);
-          woodOsc.frequency.linearRampToValueAtTime(120, ctx.currentTime + 1.2);
-          woodGain.gain.setValueAtTime(0.4, ctx.currentTime);
-          woodGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.2);
-          woodOsc.connect(woodGain);
-          woodGain.connect(ctx.destination);
-          woodOsc.start();
-          woodOsc.stop(ctx.currentTime + 1.2);
-        }, 600);
+        // نغمة وترية ذهبية راقية جداً (A Major Harmony) تتلاشى بنعومة
+        const notes = [220.00, 277.18, 329.63, 440.00];
+        notes.forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.18 / (index + 1), ctx.currentTime + 0.4);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime);
+          osc.stop(ctx.currentTime + 3.2);
+        });
       } else if (type === 'sealImpact') {
-        // صوت ضربة الختم الملكي
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(450, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.9);
-        gain.gain.setValueAtTime(0.7, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.9);
+        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.9);
+        osc.stop(ctx.currentTime + 1.2);
       }
     }
 
@@ -634,7 +616,6 @@
 
       if (parseInt(val) === 1902) {
         hasBreached = true;
-        // تأثير هزة الشاشة واهتزاز الجوال الحقيقي
         document.getElementById('pageBody').classList.add('shake-active');
         setTimeout(() => document.getElementById('pageBody').classList.remove('shake-active'), 400);
 
@@ -729,7 +710,7 @@
           if (currentQIndex < masmakFacts.length) {
             renderQuestion();
           } else {
-            // إتمام الـ 5 أسئلة: تشغيل المشهد السينمائي للرياح وفتح الباب
+            // ختام الأسئلة: تشغيل النغمة الوترية الذهبية الراقية
             playCinematicFx('gateOpen');
             if (navigator.vibrate) navigator.vibrate([100, 80, 250]);
 
