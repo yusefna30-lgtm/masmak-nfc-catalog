@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>قصر المصمك | الكتالوج التفاعلي الذكي</title>
+  
+  <!-- خط تجوال العربي الفاخر -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-black: #0c0a09;
+      --card-bg: rgba(26, 20, 20, 0.7);
+      --card-border: rgba(212, 175, 55, 0.2);
+      --gold: #d4af37;
+      --gold-matte: #c5a059;
+      --gold-gradient: linear-gradient(135deg, #dfba63 0%, #b88b2e 100%);
+      --maroon: #4a121a;
+      --text-main: #f5f5f4;
+      --text-muted: #a8a29e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: radial-gradient(circle at 50% 20%, rgba(74, 18, 26, 0.25) 0%, rgba(12, 10, 9, 0.95) 70%);
+      padding: 16px;
+      gap: 16px;
+      padding-bottom: 90px;
+    }
+
+    /* شريط التوثيق NFC */
+    .nfc-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--card-border);
+      padding: 8px 14px;
+      border-radius: 50px;
+      backdrop-filter: blur(10px);
+    }
+    .nfc-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--gold);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+    .serial-number {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* بطاقة استعراض التيشيرت الحركي */
+    .product-stage {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .tshirt-viewport {
+      width: 100%;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      perspective: 1000px;
+    }
+    .tshirt-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .tshirt-card.flipped {
+      transform: rotateY(180deg);
+    }
+    .tshirt-side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .tshirt-side.back {
+      transform: rotateY(180deg);
+    }
+    .tshirt-side img {
+      max-width: 90%;
+      max-height: 290px;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+    }
+    .view-toggle-btn {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--gold);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* مساعد المظهر الذكي (AI Stylist) */
+    .stylist-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      backdrop-filter: blur(14px);
+    }
+    .stylist-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ai-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: 900;
+      font-size: 0.85rem;
+    }
+    .stylist-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .vibe-chips {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .vibe-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      padding: 10px 4px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .vibe-chip.active {
+      background: var(--gold-gradient);
+      color: #000;
+      font-weight: 800;
+      border-color: var(--gold);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    /* شبكة تنسيق سير الساعة والمحفظة */
+    .capsule-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .capsule-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .capsule-badge {
+      font-size: 0.7rem;
+      color: var(--gold);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .capsule-item-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .capsule-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* مقاسات التيشيرت */
+    .size-picker {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .size-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .size-options {
+      display: flex;
+      gap: 8px;
+    }
+    .size-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .size-btn.active {
+      background: var(--gold-gradient);
+      color: #000;
+      font-weight: 800;
+      border-color: var(--gold);
+    }
+
+    /* شريط الطلب السفلي الثابت */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(12, 10, 9, 0.95);
+      border-top: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+    }
+    .order-action-btn {
+      width: 100%;
+      max-width: 480px;
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- شريط توثيق الشريحة الذكية -->
+    <div class="nfc-banner">
+      <div class="nfc-badge">
+        <span class="pulse-dot"></span>
+        <span>شريحة NFC موثقة | إصدار محدود</span>
+      </div>
+      <span class="serial-number">MASMAK-001/EZWA</span>
+    </div>
+
+    <!-- منصة العرض الحركية للتيشيرت -->
+    <div class="product-stage">
+      <div class="tshirt-viewport">
+        <div class="tshirt-card" id="tshirtCard">
+          <!-- الوجه الأمامي -->
+          <div class="tshirt-side front">
+            <img id="frontImg" src="تيرت ظ (2).jpeg" alt="واجهة تيشيرت قصر المصمك">
+          </div>
+          <!-- الوجه الخلفي -->
+          <div class="tshirt-side back">
+            <img id="backImg" src="تيرت ظ (1).jpeg" alt="ظهر تيشيرت قصر المصمك">
+          </div>
+        </div>
+      </div>
+      <button class="view-toggle-btn" id="flipBtn" onclick="toggleTshirtView()">
+        <span id="flipLabel">استكشف تصميم الظهر (المصمك) ↺</span>
+      </button>
+    </div>
+
+    <!-- مستشار المظهر الذكي (AI Stylist) -->
+    <div class="stylist-container">
+      <div class="stylist-header">
+        <div class="ai-avatar">AI</div>
+        <div class="stylist-title">مستشار المظهر: ما هو طابع طلّتك القادمة؟</div>
+      </div>
+
+      <div class="vibe-chips">
+        <div class="vibe-chip active" onclick="setVibe('luxury', this)">فخامة ومناسبة</div>
+        <div class="vibe-chip" onclick="setVibe('casual', this)">كاجوال نهارية</div>
+        <div class="vibe-chip" onclick="setVibe('minimal', this)">سفر واستكنان</div>
+      </div>
+
+      <!-- كبسولة الإكسسوارات وسير الساعة والمحفظة -->
+      <div class="capsule-grid" id="capsuleContent">
+        <!-- يتم التحديث عبر الجافاسكريبت -->
+      </div>
+    </div>
+
+    <!-- اختيار المقاس المباشر -->
+    <div class="size-picker">
+      <div class="size-title">قصة بوكس فيت | اختر مقاسك:</div>
+      <div class="size-options">
+        <div class="size-btn" onclick="selectSize('S', this)">S</div>
+        <div class="size-btn active" onclick="selectSize('M', this)">M</div>
+        <div class="size-btn" onclick="selectSize('L', this)">L</div>
+        <div class="size-btn" onclick="selectSize('XL', this)">XL</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- زر الطلب المباشر عبر واتساب -->
+  <div class="bottom-bar">
+    <a href="#" id="whatsappOrderBtn" class="order-action-btn" target="_blank">
+      <span>تأكيد حجز التيشيرت عبر واتساب</span>
+      <span>←</span>
+    </a>
+  </div>
+
+  <script>
+    let isFlipped = false;
+    let currentVibe = 'luxury';
+    let currentSize = 'M';
+    const whatsappPhone = '966502777884';
+
+    // بيانات كبسولة التنسيق بناءً على اختيار الطابع
+    const stylingData = {
+      luxury: {
+        flipToBack: true,
+        flipText: 'عرض واجهة التيشيرت (الصدر) ↺',
+        capsule: [
+          {
+            badge: '⌚ سير الساعة',
+            title: 'معدني ذهبي مطفي أو جلد أسود',
+            desc: 'يتناغم بدقة مع لمعة قصر المصمك وشعار EZWA.'
+          },
+          {
+            badge: '💳 المحفظة',
+            title: 'جلد كافيار أسود فاخر',
+            desc: 'حامل بطاقات مدمج بحواف داكنة تبرز رسمية القطعة.'
+          },
+          {
+            badge: '👖 البنطال',
+            title: 'قماشي مفرود أسود أو كحلي داكن',
+            desc: 'قصة مستقيمة توازن عرض أكتاف التيشيرت المنسدلة.'
+          },
+          {
+            badge: '👟 الحذاء',
+            title: 'حذاء جلدي ناعم أو سنيكرز أسود فاحم',
+            desc: 'نعل بسيط بدون تفاصيل صاخبة للحفاظ على الهيبة.'
+          }
+        ]
+      },
+      casual: {
+        flipToBack: false,
+        flipText: 'استكشف تصميم الظهر (المصمك) ↺',
+        capsule: [
+          {
+            badge: '⌚ سير الساعة',
+            title: 'جلد جملي (Tan) أو قماش ناتو بيج',
+            desc: 'يعكس ألوان خيوط السدو التراثية على الكم والحافة.'
+          },
+          {
+            badge: '💳 المحفظة',
+            title: 'حامل بطاقات جلد طبيعي جملي',
+            desc: 'درجة ترابية مستوحاة من طين وأبواب قصر المصمك.'
+          },
+          {
+            badge: '👖 البنطال',
+            title: 'كارجو أو جينز بيج / رملي واسع',
+            desc: 'يكسر عتمة اللون العنابي ويعطي طابع ستريت وير صريح.'
+          },
+          {
+            badge: '👟 الحذاء',
+            title: 'سنيكرز أبيض أو رمادي فاتح',
+            desc: 'يبرز التفاصيل الفاتحة في شريط السدو الجانبي.'
+          }
+        ]
+      },
+      minimal: {
+        flipToBack: true,
+        flipText: 'عرض واجهة التيشيرت (الصدر) ↺',
+        capsule: [
+          {
+            badge: '⌚ سير الساعة',
+            title: 'سيليكون أسود مطفي أو رمادي حديدي',
+            desc: 'مريح وعملي جداً ومقاوم للتعرق والتنقل.'
+          },
+          {
+            badge: '💳 المحفظة',
+            title: 'محفظة معدنية سوداء (RFID)',
+            desc: 'محفظة ذكية متطابقة مع تقنية شريحة الـ NFC المدمجة.'
+          },
+          {
+            badge: '👖 البنطال',
+            title: 'سويت بانتس أو باراشوت أسود خفيف',
+            desc: 'راحة تامة لساعات السفر الطويلة.'
+          },
+          {
+            badge: '👟 الحذاء',
+            title: 'سنيكرز مريح للجري والمشي (Comfort)',
+            desc: 'بلون رمادي أو أسود لتسهيل الحركة.'
+          }
+        ]
+      }
+    };
+
+    function toggleTshirtView() {
+      const card = document.getElementById('tshirtCard');
+      const label = document.getElementById('flipLabel');
+      isFlipped = !isFlipped;
+      
+      if (isFlipped) {
+        card.classList.add('flipped');
+        label.innerText = 'عرض واجهة التيشيرت (الصدر) ↺';
+      } else {
+        card.classList.remove('flipped');
+        label.innerText = 'استكشف تصميم الظهر (المصمك) ↺';
+      }
+    }
+
+    function setVibe(vibeKey, element) {
+      currentVibe = vibeKey;
+      
+      // تحديث حالة الأزرار
+      document.querySelectorAll('.vibe-chip').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+
+      const data = stylingData[vibeKey];
+
+      // تحريك التيشيرت تلقائياً للواجهة الأنسب
+      const card = document.getElementById('tshirtCard');
+      const label = document.getElementById('flipLabel');
+      isFlipped = data.flipToBack;
+      if (isFlipped) {
+        card.classList.add('flipped');
+      } else {
+        card.classList.remove('flipped');
+      }
+      label.innerText = data.flipText;
+
+      // تحديث كبسولة الإكسسوارات وسير الساعة والمحفظة
+      renderCapsule(data.capsule);
+      updateWhatsappLink();
+    }
+
+    function renderCapsule(items) {
+      const container = document.getElementById('capsuleContent');
+      container.innerHTML = '';
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'capsule-card';
+        div.innerHTML = `
+          <div class="capsule-badge">${item.badge}</div>
+          <div class="capsule-item-name">${item.title}</div>
+          <div class="capsule-desc">${item.desc}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function selectSize(size, element) {
+      currentSize = size;
+      document.querySelectorAll('.size-btn').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+      updateWhatsappLink();
+    }
+
+    function updateWhatsappLink() {
+      const vibeTitles = {
+        luxury: 'فخامة ومناسبات خاصة',
+        casual: 'كاجوال وطلعة يومية',
+        minimal: 'سفر واستكنان مريح'
+      };
+      
+      const message = `مرحباً، أود حجز تيشيرت (قصر المصمك - الإصدار التفاعلي NFC)
+المقاس المطلوب: ${currentSize}
+طابع الإطلالة المفضل لدي: ${vibeTitles[currentVibe]}
+يرجى تأكيد توفر المقاس وطريقة الاستلام.`;
+
+      const encoded = encodeURIComponent(message);
+      document.getElementById('whatsappOrderBtn').href = `https://wa.me/${whatsappPhone}?text=${encoded}`;
+    }
+
+    // التهيئة الأولى عند الفتح
+    renderCapsule(stylingData.luxury.capsule);
+    updateWhatsappLink();
+  </script>
+</body>
+</html>
