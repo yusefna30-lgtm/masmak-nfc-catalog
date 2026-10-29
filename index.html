@@ -50,10 +50,10 @@
       background: radial-gradient(circle at 50% 20%, rgba(74, 18, 26, 0.25) 0%, rgba(12, 10, 9, 0.95) 70%);
       padding: 16px;
       gap: 16px;
-      padding-bottom: 90px;
+      padding-bottom: 95px;
     }
 
-    /* شريط التوثيق NFC */
+    /* شريط توثيق الشريحة الذكية */
     .nfc-banner {
       display: flex;
       align-items: center;
@@ -91,13 +91,13 @@
       letter-spacing: 1px;
     }
 
-    /* بطاقة استعراض التيشيرت الحركي */
+    /* مسرح استعراض التيشيرت */
     .product-stage {
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 20px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,7 +106,7 @@
     }
     .tshirt-viewport {
       width: 100%;
-      height: 320px;
+      height: 310px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -138,26 +138,26 @@
     }
     .tshirt-side img {
       max-width: 90%;
-      max-height: 290px;
+      max-height: 280px;
       object-fit: contain;
-      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.65));
     }
     .view-toggle-btn {
-      margin-top: 10px;
+      margin-top: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: var(--gold);
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 30px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
     }
 
-    /* مساعد المظهر الذكي (AI Stylist) */
+    /* مستشار المظهر الذكي (AI Stylist) */
     .stylist-container {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -169,6 +169,11 @@
       backdrop-filter: blur(14px);
     }
     .stylist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-info {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -186,10 +191,30 @@
       font-size: 0.85rem;
     }
     .stylist-title {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
       color: var(--text-main);
     }
+    .audio-btn {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--card-border);
+      color: var(--gold);
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+    .audio-btn:active {
+      transform: scale(0.9);
+      background: var(--gold);
+      color: #000;
+    }
+
     .vibe-chips {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -199,9 +224,9 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--text-muted);
-      padding: 10px 4px;
+      padding: 9px 4px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       text-align: center;
       cursor: pointer;
@@ -240,7 +265,7 @@
       gap: 5px;
     }
     .capsule-item-name {
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -250,7 +275,7 @@
       line-height: 1.35;
     }
 
-    /* مقاسات التيشيرت */
+    /* اختيار المقاس */
     .size-picker {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -261,7 +286,7 @@
       justify-content: space-between;
     }
     .size-title {
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 700;
       color: var(--gold);
     }
@@ -341,11 +366,11 @@
     <div class="product-stage">
       <div class="tshirt-viewport">
         <div class="tshirt-card" id="tshirtCard">
-          <!-- الوجه الأمامي -->
+          <!-- الوجه الأمامي (الصدر) -->
           <div class="tshirt-side front">
             <img id="frontImg" src="تيرت ظ (2).jpeg" alt="واجهة تيشيرت قصر المصمك">
           </div>
-          <!-- الوجه الخلفي -->
+          <!-- الوجه الخلفي (الظهر) -->
           <div class="tshirt-side back">
             <img id="backImg" src="تيرت ظ (1).jpeg" alt="ظهر تيشيرت قصر المصمك">
           </div>
@@ -359,8 +384,13 @@
     <!-- مستشار المظهر الذكي (AI Stylist) -->
     <div class="stylist-container">
       <div class="stylist-header">
-        <div class="ai-avatar">AI</div>
-        <div class="stylist-title">مستشار المظهر: ما هو طابع طلّتك القادمة؟</div>
+        <div class="header-info">
+          <div class="ai-avatar">AI</div>
+          <div class="stylist-title">مستشار المظهر: طابع طلّتك؟</div>
+        </div>
+        <button class="audio-btn" onclick="playCurrentVibeAudio()" title="استمع لنصيحة المساعد">
+          🔊
+        </button>
       </div>
 
       <div class="vibe-chips">
@@ -371,11 +401,11 @@
 
       <!-- كبسولة الإكسسوارات وسير الساعة والمحفظة -->
       <div class="capsule-grid" id="capsuleContent">
-        <!-- يتم التحديث عبر الجافاسكريبت -->
+        <!-- يتم التحديث تلقائياً -->
       </div>
     </div>
 
-    <!-- اختيار المقاس المباشر -->
+    <!-- اختيار المقاس -->
     <div class="size-picker">
       <div class="size-title">قصة بوكس فيت | اختر مقاسك:</div>
       <div class="size-options">
@@ -388,7 +418,7 @@
 
   </div>
 
-  <!-- زر الطلب المباشر عبر واتساب -->
+  <!-- زر الطلب عبر واتساب -->
   <div class="bottom-bar">
     <a href="#" id="whatsappOrderBtn" class="order-action-btn" target="_blank">
       <span>تأكيد حجز التيشيرت عبر واتساب</span>
@@ -402,7 +432,14 @@
     let currentSize = 'M';
     const whatsappPhone = '966502777884';
 
-    // بيانات كبسولة التنسيق بناءً على اختيار الطابع
+    // نصوص النطق الصوتي العربي لكل طابع
+    const speechMessages = {
+      luxury: "لطلة فخمة، نسق تيشيرت قصر المصمك مع سير ساعة معدني ذهبي ومحفظة جلد أسود فاخر لإبراز تفاصيل الذهب المطفي.",
+      casual: "لطلعة كاجوال نهارية، نقترح سير ساعة جلد جملي وبنطال رملي ليتماشى مع نقوش السدو التراثية ولون طين المصمك.",
+      minimal: "للسفر والاستكنان، اعتمد سير ساعة سيليكون عملي ومريح مع محفظة ذكية متوافقة مع تقنية شريحة القطعة."
+    };
+
+    // بيانات كبسولة التنسيق
     const stylingData = {
       luxury: {
         flipToBack: true,
@@ -484,6 +521,27 @@
       }
     };
 
+    // دالة النطق الصوتي العربي عبر المتصفح
+    function speakArabic(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ar-SA';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      const arabicVoice = voices.find(v => v.lang.startsWith('ar'));
+      if (arabicVoice) {
+        utterance.voice = arabicVoice;
+      }
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function playCurrentVibeAudio() {
+      speakArabic(speechMessages[currentVibe]);
+    }
+
     function toggleTshirtView() {
       const card = document.getElementById('tshirtCard');
       const label = document.getElementById('flipLabel');
@@ -501,13 +559,12 @@
     function setVibe(vibeKey, element) {
       currentVibe = vibeKey;
       
-      // تحديث حالة الأزرار
       document.querySelectorAll('.vibe-chip').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
 
       const data = stylingData[vibeKey];
 
-      // تحريك التيشيرت تلقائياً للواجهة الأنسب
+      // تقليب التيشيرت تلقائياً
       const card = document.getElementById('tshirtCard');
       const label = document.getElementById('flipLabel');
       isFlipped = data.flipToBack;
@@ -518,9 +575,11 @@
       }
       label.innerText = data.flipText;
 
-      // تحديث كبسولة الإكسسوارات وسير الساعة والمحفظة
       renderCapsule(data.capsule);
       updateWhatsappLink();
+
+      // تشغيل الصوت العربي فور الضغط على الطابع
+      speakArabic(speechMessages[vibeKey]);
     }
 
     function renderCapsule(items) {
@@ -561,7 +620,7 @@
       document.getElementById('whatsappOrderBtn').href = `https://wa.me/${whatsappPhone}?text=${encoded}`;
     }
 
-    // التهيئة الأولى عند الفتح
+    // التهيئة التلقائية عند الفتح
     renderCapsule(stylingData.luxury.capsule);
     updateWhatsappLink();
   </script>
