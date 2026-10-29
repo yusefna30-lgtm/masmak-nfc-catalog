@@ -433,7 +433,6 @@
     let currentVibe = 'luxury';
     let currentSize = 'M';
     const whatsappPhone = '966502777884';
-    let currentAudio = null;
 
     // نصوص النطق العربي
     const speechMessages = {
@@ -441,6 +440,18 @@
       casual: "لطلعة كاجوال نهارية، نقترح سير ساعة جلد جملي وبنطال رملي ليتماشى مع نقوش السدو التراثية ولون طين المصمك.",
       minimal: "للسفر والاستكنان، اعتمد سير ساعة سيليكون عملي ومريح مع محفظة ذكية متوافقة مع تقنية شريحة القطعة."
     };
+
+    // مصفوفة لتخزين الأصوات المتاحة في النظام فور تحميلها
+    let systemVoices = [];
+    function initVoices() {
+      if ('speechSynthesis' in window) {
+        systemVoices = window.speechSynthesis.getVoices();
+      }
+    }
+    initVoices();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = initVoices;
+    }
 
     // بيانات كبسولة التنسيق
     const stylingData = {
@@ -524,19 +535,30 @@
       }
     };
 
-    // دالة الصوت العربي المباشر عبر المتصفح واللابتوب والجوال
+    // محرك النطق العربي المعتمد على نظام الجوال مباشرة
     function speakArabic(text) {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
-      const encoded = encodeURIComponent(text);
-      const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=ar&client=tw-ob`;
-      
-      currentAudio = new Audio(audioUrl);
-      currentAudio.play().catch(e => {
-        console.log("انقر على زر السماعة لتشغيل الصوت يدوياً:", e);
-      });
+      if (!('speechSynthesis' in window)) return;
+
+      // إلغاء أي عملية معلقة لضمان استجابة أندرويد فوراً
+      window.speechSynthesis.cancel();
+
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.92;
+        utterance.pitch = 1.0;
+
+        if (systemVoices.length === 0) {
+          systemVoices = window.speechSynthesis.getVoices();
+        }
+
+        const arVoice = systemVoices.find(v => v.lang.startsWith('ar'));
+        if (arVoice) {
+          utterance.voice = arVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
+      }, 50);
     }
 
     function playCurrentVibeAudio() {
@@ -618,7 +640,7 @@
       document.getElementById('whatsappOrderBtn').href = `https://wa.me/${whatsappPhone}?text=${encoded}`;
     }
 
-    // التهيئة التلقائية عند التحميل
+    // التهيئة التلقائية
     renderCapsule(stylingData.luxury.capsule);
     updateWhatsappLink();
   </script>
