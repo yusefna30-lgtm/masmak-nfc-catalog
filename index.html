@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>بوابة المصمك المشفرة | EZWA</title>
+  <title>بوابة قصر المصمك | EZWA</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
   <style>
     :root {
       --bg-black: #080605;
-      --card-bg: rgba(22, 17, 16, 0.82);
+      --card-bg: rgba(22, 17, 16, 0.85);
       --card-border: rgba(212, 175, 55, 0.25);
       --gold: #dfba63;
       --gold-dark: #b88b2e;
@@ -20,7 +20,8 @@
       --maroon: #4a121a;
       --text-main: #f5f5f4;
       --text-muted: #a8a29e;
-      --danger: #e63946;
+      --success: #28a745;
+      --danger: #dc3545;
     }
 
     * {
@@ -86,7 +87,7 @@
       100% { transform: scale(0.9); opacity: 0.6; }
     }
 
-    /* منصة عرض التيشيرت */
+    /* منصة التيشيرت */
     .stage-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -140,7 +141,7 @@
       cursor: pointer;
     }
 
-    /* صندوق التحدي الحي */
+    /* صندوق التحدي */
     .quest-card {
       background: linear-gradient(180deg, rgba(32, 22, 21, 0.9) 0%, rgba(14, 10, 9, 0.95) 100%);
       border: 1px solid var(--card-border);
@@ -169,7 +170,7 @@
       line-height: 1.5;
     }
 
-    /* 1. القرص الدائري لفك القفل */
+    /* قفل الأرقام */
     .dial-wrapper {
       display: flex;
       flex-direction: column;
@@ -179,7 +180,7 @@
       padding: 10px 0;
     }
     .dial-display {
-      font-size: 2.4rem;
+      font-size: 2.5rem;
       font-weight: 900;
       letter-spacing: 6px;
       color: #fff;
@@ -215,76 +216,71 @@
       color: #000;
       border: none;
       border-radius: 12px;
-      padding: 10px 24px;
-      font-size: 0.9rem;
+      padding: 12px 26px;
+      font-size: 0.95rem;
       font-weight: 800;
       cursor: pointer;
     }
 
-    /* 2. رادار البحث التفاعلي (المرحلة 2) */
-    .radar-box {
+    /* قسم الأسئلة الخمسة */
+    .questions-box {
       display: none;
       width: 100%;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      gap: 14px;
+      animation: fadeIn 0.4s ease;
     }
-    .timer-bar-bg {
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .question-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.5;
+      text-align: right;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
     }
-    .timer-bar-fill {
-      width: 100%;
-      height: 100%;
-      background: var(--gold);
-      transition: width 0.1s linear;
-    }
-    .sensor-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-      margin-top: 6px;
-    }
-    .sensor-btn {
+    .option-btn {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      padding: 14px 10px;
-      border-radius: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 600;
+      text-align: right;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .sensor-btn:active {
-      transform: scale(0.95);
+    .option-btn:active {
+      transform: scale(0.98);
     }
-    .sensor-btn.correct {
-      background: rgba(40, 167, 69, 0.35);
-      border-color: #28a745;
+    .option-btn.correct {
+      background: rgba(40, 167, 69, 0.3);
+      border-color: var(--success);
       color: #fff;
     }
-    .sensor-btn.wrong {
-      background: rgba(220, 53, 69, 0.35);
-      border-color: #dc3545;
+    .option-btn.wrong {
+      background: rgba(220, 53, 69, 0.3);
+      border-color: var(--danger);
+      color: #fff;
     }
 
-    /* 3. شاشة الختم الناري وتوليد الوثيقة (المرحلة 3) */
+    /* مرحلة الختم والاسم */
     .seal-stage {
       display: none;
       width: 100%;
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      animation: fadeIn 0.6s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+      animation: fadeIn 0.5s ease;
     }
     .owner-input {
       width: 100%;
@@ -300,8 +296,6 @@
     .owner-input:focus {
       border-color: var(--gold);
     }
-    
-    /* زر البصمة والختم المطول */
     .seal-press-btn {
       width: 90px;
       height: 90px;
@@ -315,14 +309,13 @@
       cursor: pointer;
       box-shadow: 0 0 25px var(--gold-glow);
       user-select: none;
-      position: relative;
     }
     .seal-press-btn:active {
       transform: scale(0.94);
       box-shadow: 0 0 45px rgba(223, 186, 99, 0.9);
     }
 
-    /* بطاقة الملكية الرسمية الناتجة */
+    /* البطاقة النهائية */
     .final-pass-card {
       display: none;
       width: 100%;
@@ -360,12 +353,14 @@
     .pass-owner-title {
       font-size: 0.72rem;
       color: var(--text-muted);
+      text-align: right;
     }
     .pass-owner-name {
       font-size: 1.35rem;
       font-weight: 900;
       color: #fff;
       margin: 4px 0 16px 0;
+      text-align: right;
     }
     .pass-meta {
       display: flex;
@@ -418,12 +413,12 @@
     <div class="top-bar">
       <div class="security-status">
         <span class="radar-pulse"></span>
-        <span id="systemStatusText">نظام الحصن: مشفّر</span>
+        <span id="systemStatusText">بوابة الحصن: مشفّرة</span>
       </div>
-      <span style="font-size: 0.75rem; color: var(--text-muted);">EZWA-VAULT-2026</span>
+      <span style="font-size: 0.75rem; color: var(--text-muted);">EZWA-VAULT-1902</span>
     </div>
 
-    <!-- منصة استعراض التيشيرت الواقعي -->
+    <!-- منصة استعراض التيشيرت -->
     <div class="stage-card">
       <div class="viewport">
         <div class="flipper" id="tshirtFlipper">
@@ -440,17 +435,17 @@
       </button>
     </div>
 
-    <!-- غرفة التحدي والألغاز السينمائية -->
+    <!-- غرفة التحدي -->
     <div class="quest-card" id="questCard">
       
-      <!-- المرحلة 1: فك قفل باب المصمك العتيق -->
-      <div id="stage1Box" style="width: 100%;">
+      <!-- 1. مرحلة قفل عام 1902 -->
+      <div id="stageDialBox" style="width: 100%;">
         <div class="quest-header">
           <span>🗝️</span>
-          <span>المرحلة الأولى: فك قفل المصمك</span>
+          <span>المرحلة الأولى: فك قفل باب المصمك</span>
         </div>
         <p class="quest-brief" style="margin-top: 6px;">
-          أدر التروس إلى عام فجر استرداد الرياض وانطلاق ملحمة التوحيد، لتجاوز بوابة الحصن:
+          أدر المؤشر إلى عام فجر استرداد الرياض وبداية التوحيد لفتح بوابة الحصن:
         </p>
         
         <div class="dial-wrapper">
@@ -459,38 +454,28 @@
             <div class="dial-arrow" onclick="adjustDial(-1)">▼</div>
             <div class="dial-arrow" onclick="adjustDial(1)">▲</div>
           </div>
-          <button class="confirm-dial-btn" onclick="verifyStage1()">كسر القفل ودخول البوابة</button>
+          <button class="confirm-dial-btn" onclick="verifyDial()">كسر القفل ودخول التحدي</button>
         </div>
       </div>
 
-      <!-- المرحلة 2: رادار تحديد موضع شريحة السدو السفلية -->
-      <div class="radar-box" id="stage2Box">
+      <!-- 2. مرحلة الأسئلة الخمسة لحقائق المصمك -->
+      <div class="questions-box" id="stageQuestionsBox">
         <div class="quest-header">
-          <span>📡</span>
-          <span>المرحلة الثانية: مسح الشريحة الذكية</span>
+          <span>📜</span>
+          <span id="questionCounter">حقائق المصمك (1 من 5)</span>
         </div>
-        <p class="quest-brief">
-          أين تتموضع شريحة NFC المدمجة في هذا الإصدار؟ انقر على الحساس الصحيح قبل انتهاء العداد:
-        </p>
-        <div class="timer-bar-bg">
-          <div class="timer-bar-fill" id="timerFill"></div>
-        </div>
-        <div class="sensor-grid">
-          <button class="sensor-btn" onclick="verifySensor(false, this)">الياقة الداخلية</button>
-          <button class="sensor-btn" onclick="verifySensor(false, this)">خلف شعار الصدر</button>
-          <button class="sensor-btn" onclick="verifySensor(true, this)">شريط السدو بالحاشية السفلية</button>
-          <button class="sensor-btn" onclick="verifySensor(false, this)">ثنية الكتف الأيمن</button>
-        </div>
+        <div class="question-title" id="questionTitle">نص السؤال التاريخي هنا...</div>
+        <div class="options-list" id="optionsList"></div>
       </div>
 
-      <!-- المرحلة 3: الختم الناري وبصمة المالك -->
-      <div class="seal-stage" id="stage3Box">
+      <!-- 3. مرحلة الاسم والختم -->
+      <div class="seal-stage" id="stageSealBox">
         <div class="quest-header">
           <span>🔥</span>
-          <span>المرحلة الثالثة: ختم وثيقة المقتني</span>
+          <span>المرحلة الأخيرة: ختم وثيقة المقتني</span>
         </div>
         <p class="quest-brief">
-          اكتب اسمك الثلاثي الكريم، ثم اضغط على البصمة لختم البطاقة بالذهب:
+          أحسنت! اجتزت حقائق المصمك بنجاح. اكتب اسمك الثلاثي واضغط على البصمة لاعتماد توثيقك السحابي:
         </p>
         
         <input type="text" id="ownerInputName" class="owner-input" placeholder="اسمك الثلاثي هنا...">
@@ -501,7 +486,7 @@
         </div>
       </div>
 
-      <!-- ظهور البطاقة النهائية بعد الانتصار بالتحدي -->
+      <!-- 4. ظهور البطاقة المعتمدة -->
       <div class="final-pass-card" id="finalPass">
         <div class="pass-header">
           <span class="pass-brand">EZWA</span>
@@ -519,7 +504,7 @@
 
   </div>
 
-  <!-- زر واتساب السفلي لتثبيت الحجز -->
+  <!-- زر واتساب السفلي -->
   <div class="bottom-bar">
     <a href="#" id="orderBtn" class="whatsapp-btn" target="_blank">
       <span>تأكيد حجز الإصدار وتثبيت الوثيقة</span>
@@ -530,16 +515,15 @@
   <script>
     let isFlipped = false;
     let currentDial = 1895;
-    let timerInterval = null;
+    let currentQIndex = 0;
     const whatsappPhone = '966502777884';
 
-    // محرك صوتي داخلي محيطي (Web Audio API)
+    // محرك المؤثرات الصوتية
     function playSfx(type) {
       if (!window.AudioContext && !window.webkitAudioContext) return;
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
       if (type === 'tick') {
-        // صوت تكة التروس
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'triangle';
@@ -551,7 +535,6 @@
         osc.start();
         osc.stop(ctx.currentTime + 0.05);
       } else if (type === 'door') {
-        // صوت فتح باب المصمك الثقيل والصدى
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sawtooth';
@@ -564,7 +547,6 @@
         osc.start();
         osc.stop(ctx.currentTime + 1.2);
       } else if (type === 'seal') {
-        // صوت ضربة الختم الملكي
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
@@ -593,7 +575,7 @@
       }
     }
 
-    // المرحلة 1: تحريك القفل
+    // 1. منطق القفل
     function adjustDial(val) {
       currentDial += val;
       document.getElementById('dialYear').innerText = currentDial;
@@ -601,72 +583,127 @@
       if (navigator.vibrate) navigator.vibrate(30);
     }
 
-    function verifyStage1() {
+    function verifyDial() {
       if (currentDial === 1902) {
         playSfx('door');
         if (navigator.vibrate) navigator.vibrate([80, 50, 150]);
-        document.getElementById('systemStatusText').innerText = "تم اختراق البوابة: 1902م";
-        document.getElementById('stage1Box').style.display = 'none';
-        document.getElementById('stage2Box').style.display = 'flex';
-        startStage2Timer();
+        document.getElementById('systemStatusText').innerText = "تم فك القفل: عام 1902م";
+        document.getElementById('stageDialBox').style.display = 'none';
+        document.getElementById('stageQuestionsBox').style.display = 'flex';
+        renderQuestion();
       } else {
         alert("القفل لم يتحرك! ابحث عن عام فجر استرداد المصمك التاريخي.");
       }
     }
 
-    // المرحلة 2: عداد الرادار
-    function startStage2Timer() {
-      let timeLeft = 100;
-      const fill = document.getElementById('timerFill');
-      timerInterval = setInterval(() => {
-        timeLeft -= 1.5;
-        fill.style.width = timeLeft + '%';
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          alert("انتهى وقت المسح! أعيد ضبط التردد.");
-          startStage2Timer();
-        }
-      }, 100);
+    // 2. الأسئلة الخمسة لحقائق المصمك
+    const masmakFacts = [
+      {
+        q: "ما هو الأصل اللغوي لاسم قصر 'المصمك' وماذا يعني في تاريخ العمارة؟",
+        options: [
+          "المرتفع عن الأرض",
+          "الحصن السميك والمصمت القوي (المصمك أو المسمك)",
+          "القصر المزين بالنقوش"
+        ],
+        ans: 1
+      },
+      {
+        q: "ما هو الأثر البارز الذي لا يزال عالقاً في الباب الخشبي الرئيسي لقصر المصمك حتى يومنا هذا؟",
+        options: [
+          "رصاصة بندقية قديمة",
+          "رأس حربة الأمير فهد بن جلوي",
+          "سيف الإمام تركي بن عبدالله"
+        ],
+        ans: 1
+      },
+      {
+        q: "يحتوي الباب الرئيسي لقصر المصمك على فتحة صغيرة تسمى 'الخوخة'، ما الغاية العسكرية منها؟",
+        options: [
+          "فتحة لمراقبة النجوم",
+          "منفذ ضيق يسمح بدخول شخص واحد منحنياً للتحكم بالحراسة",
+          "فتحة مخصصة لرمي السهام فقط"
+        ],
+        ans: 1
+      },
+      {
+        q: "كم عدداً للأبراج الأسطوانية الدفاعية التي ترتفع في أركان قصر المصمك؟",
+        options: [
+          "3 أبراج",
+          "4 أبراج أسطوانية",
+          "6 أبراج مربعة"
+        ],
+        ans: 1
+      },
+      {
+        q: "ما هي المواد الطبيعية الأساسية التي شُيدت منها أسقف وجدران قصر المصمك؟",
+        options: [
+          "الحجر الجيري والجرانيت",
+          "الطين واللبن وجذوع الأثل وجريد النخل",
+          "الرخام الأبيض والإسمنت"
+        ],
+        ans: 1
+      }
+    ];
+
+    function renderQuestion() {
+      const item = masmakFacts[currentQIndex];
+      document.getElementById('questionCounter').innerText = `حقائق المصمك (${currentQIndex + 1} من ${masmakFacts.length})`;
+      document.getElementById('questionTitle').innerText = item.q;
+
+      const container = document.getElementById('optionsList');
+      container.innerHTML = '';
+
+      item.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => chooseAnswer(idx, btn);
+        container.appendChild(btn);
+      });
     }
 
-    function verifySensor(isCorrect, btn) {
-      clearInterval(timerInterval);
-      if (isCorrect) {
-        btn.classList.add('correct');
-        playSfx('seal');
-        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    function chooseAnswer(selectedIdx, btnElement) {
+      const item = masmakFacts[currentQIndex];
+      if (selectedIdx === item.ans) {
+        btnElement.classList.add('correct');
+        playSfx('tick');
+        if (navigator.vibrate) navigator.vibrate(60);
+
         setTimeout(() => {
-          document.getElementById('stage2Box').style.display = 'none';
-          document.getElementById('stage3Box').style.display = 'flex';
-          document.getElementById('systemStatusText').innerText = "تم تأكيد موضع السدو";
-        }, 500);
+          currentQIndex++;
+          if (currentQIndex < masmakFacts.length) {
+            renderQuestion();
+          } else {
+            // إتمام الـ 5 أسئلة
+            playSfx('seal');
+            document.getElementById('stageQuestionsBox').style.display = 'none';
+            document.getElementById('stageSealBox').style.display = 'flex';
+            document.getElementById('systemStatusText').innerText = "تم إثبات الأهلية التاريخية ✓";
+          }
+        }, 400);
       } else {
-        btn.classList.add('wrong');
+        btnElement.classList.add('wrong');
         if (navigator.vibrate) navigator.vibrate(200);
-        setTimeout(() => {
-          btn.classList.remove('wrong');
-          startStage2Timer();
-        }, 600);
+        setTimeout(() => btnElement.classList.remove('wrong'), 500);
       }
     }
 
-    // المرحلة 3: ختم الوثيقة
+    // 3. ختم الوثيقة
     function igniteSeal() {
       const input = document.getElementById('ownerInputName');
       const name = input.value.trim() ? input.value.trim() : 'نبيل النمر';
-      
+
       playSfx('seal');
       if (navigator.vibrate) navigator.vibrate([120, 80, 250]);
 
       document.getElementById('displayOwner').innerText = name;
-      document.getElementById('stage3Box').style.display = 'none';
+      document.getElementById('stageSealBox').style.display = 'none';
       document.getElementById('finalPass').style.display = 'block';
-      document.getElementById('systemStatusText').innerText = "تم توثيق المقتني بنجاح";
+      document.getElementById('systemStatusText').innerText = "تم توثيق المقتني بنجاح ✓";
 
-      // تحديث رابط الواتساب
-      const message = `مرحباً، اجتزت بنجاح تحدي وفك شفرات إصدار (قصر المصمك - الإصدار التفاعلي NFC).
+      const message = `مرحباً، اجتزت بنجاح فك قفل عام 1902م والأسئلة الخمسة لإصدار (قصر المصمك - الإصدار التفاعلي NFC).
 الاسم المعتمد على وثيقة الملكية: ${name}
-رمز التحدي: MSMK-1902/VAULT
+الرمز التسلسلي: MSMK-1902/VAULT
 أود تأكيد مقاسي وحجز قطعتي.`;
       document.getElementById('orderBtn').href = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
     }
