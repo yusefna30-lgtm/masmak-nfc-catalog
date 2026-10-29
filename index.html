@@ -12,7 +12,7 @@
   <style>
     :root {
       --bg-black: #080605;
-      --card-bg: rgba(22, 17, 16, 0.85);
+      --card-bg: rgba(22, 17, 16, 0.88);
       --card-border: rgba(212, 175, 55, 0.25);
       --gold: #dfba63;
       --gold-dark: #b88b2e;
@@ -41,6 +41,19 @@
       justify-content: center;
     }
 
+    /* حركة رجة الشاشة عند ضرب الحربة */
+    @keyframes screenShake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-3px, 0px) rotate(-1deg); }
+      40% { transform: translate(3px, -1px) rotate(1deg); }
+      60% { transform: translate(-2px, 2px) rotate(0deg); }
+      80% { transform: translate(2px, 1px) rotate(-1deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+    .shake-active {
+      animation: screenShake 0.4s ease;
+    }
+
     .app-container {
       width: 100%;
       max-width: 480px;
@@ -54,7 +67,6 @@
       padding-bottom: 95px;
     }
 
-    /* الشريط العلوي */
     .top-bar {
       display: flex;
       align-items: center;
@@ -170,59 +182,63 @@
       line-height: 1.5;
     }
 
-    /* قفل الأرقام */
-    .dial-wrapper {
+    /* 1. حركة سحب رأس الحربة إلى 1902 */
+    .spear-slider-container {
+      width: 100%;
+      padding: 16px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
-      width: 100%;
-      padding: 10px 0;
     }
-    .dial-display {
-      font-size: 2.5rem;
+    .target-year-display {
+      font-size: 2.3rem;
       font-weight: 900;
-      letter-spacing: 6px;
+      letter-spacing: 4px;
       color: #fff;
       text-shadow: 0 0 15px var(--gold-glow);
       font-family: monospace;
     }
-    .dial-controls {
-      display: flex;
-      gap: 16px;
-    }
-    .dial-arrow {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(223, 186, 99, 0.1);
-      border: 1px solid var(--card-border);
-      color: var(--gold);
-      font-size: 1.4rem;
+    .spear-track {
+      width: 100%;
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.2s;
     }
-    .dial-arrow:active {
-      transform: scale(0.9);
-      background: var(--gold);
-      color: #000;
+    .spear-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 12px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, rgba(223, 186, 99, 0.2) 0%, rgba(223, 186, 99, 0.7) 100%);
+      outline: none;
+      border: 1px solid var(--card-border);
     }
-    .confirm-dial-btn {
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: #000;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 26px;
-      font-size: 0.95rem;
-      font-weight: 800;
+    .spear-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #dfba63 0%, #855f1a 100%);
+      border: 2px solid #fff;
       cursor: pointer;
+      box-shadow: 0 0 18px var(--gold);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M12 2L15 8H9L12 2M11 9H13V22H11V9Z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 22px;
+    }
+    .spear-guide {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
-    /* قسم الأسئلة الخمسة */
+    /* 2. مرحلة الأسئلة الخمسة */
     .questions-box {
       display: none;
       width: 100%;
@@ -273,14 +289,14 @@
       color: #fff;
     }
 
-    /* مرحلة الختم والاسم */
+    /* 3. مرحلة الختم والاسم */
     .seal-stage {
       display: none;
       width: 100%;
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      animation: fadeIn 0.5s ease;
+      animation: fadeIn 0.6s ease;
     }
     .owner-input {
       width: 100%;
@@ -315,7 +331,7 @@
       box-shadow: 0 0 45px rgba(223, 186, 99, 0.9);
     }
 
-    /* البطاقة النهائية */
+    /* 4. البطاقة النهائية المعتمدة */
     .final-pass-card {
       display: none;
       width: 100%;
@@ -405,7 +421,7 @@
     }
   </style>
 </head>
-<body>
+<body id="pageBody">
 
   <div class="app-container">
     
@@ -413,7 +429,7 @@
     <div class="top-bar">
       <div class="security-status">
         <span class="radar-pulse"></span>
-        <span id="systemStatusText">بوابة الحصن: مشفّرة</span>
+        <span id="systemStatusText">بوابة الحصن: موصدة</span>
       </div>
       <span style="font-size: 0.75rem; color: var(--text-muted);">EZWA-VAULT-1902</span>
     </div>
@@ -438,23 +454,26 @@
     <!-- غرفة التحدي -->
     <div class="quest-card" id="questCard">
       
-      <!-- 1. مرحلة قفل عام 1902 -->
-      <div id="stageDialBox" style="width: 100%;">
+      <!-- 1. حركة سحب رأس الحربة إلى 1902 -->
+      <div id="stageSpearBox" style="width: 100%;">
         <div class="quest-header">
-          <span>🗝️</span>
-          <span>المرحلة الأولى: فك قفل باب المصمك</span>
+          <span>🗡️</span>
+          <span>المرحلة الأولى: غرس رأس الحربة</span>
         </div>
         <p class="quest-brief" style="margin-top: 6px;">
-          أدر المؤشر إلى عام فجر استرداد الرياض وبداية التوحيد لفتح بوابة الحصن:
+          اسحب رأس الحربة واغرسها في باب المصمك عند <b>عام فجر الاسترداد (1902م)</b> لكسر القفل واقتحام البوابة:
         </p>
         
-        <div class="dial-wrapper">
-          <div class="dial-display" id="dialYear">1895</div>
-          <div class="dial-controls">
-            <div class="dial-arrow" onclick="adjustDial(-1)">▼</div>
-            <div class="dial-arrow" onclick="adjustDial(1)">▲</div>
+        <div class="spear-slider-container">
+          <div class="target-year-display" id="spearYear">1865</div>
+          <div class="spear-track">
+            <input type="range" min="1865" max="1920" value="1865" class="spear-slider" id="spearInput" oninput="handleSpearMove(this.value)">
           </div>
-          <button class="confirm-dial-btn" onclick="verifyDial()">كسر القفل ودخول التحدي</button>
+          <div class="spear-guide">
+            <span>1865م (البناء)</span>
+            <span>1902م (الهدف)</span>
+            <span>1920م</span>
+          </div>
         </div>
       </div>
 
@@ -468,14 +487,14 @@
         <div class="options-list" id="optionsList"></div>
       </div>
 
-      <!-- 3. مرحلة الاسم والختم -->
+      <!-- 3. مرحلة الختم والاسم -->
       <div class="seal-stage" id="stageSealBox">
         <div class="quest-header">
           <span>🔥</span>
           <span>المرحلة الأخيرة: ختم وثيقة المقتني</span>
         </div>
         <p class="quest-brief">
-          أحسنت! اجتزت حقائق المصمك بنجاح. اكتب اسمك الثلاثي واضغط على البصمة لاعتماد توثيقك السحابي:
+          أحسنت! فتحت أبواب الحصن. اكتب اسمك الثلاثي واضغط على البصمة لاعتماد توثيقك السحابي:
         </p>
         
         <input type="text" id="ownerInputName" class="owner-input" placeholder="اسمك الثلاثي هنا...">
@@ -514,50 +533,82 @@
 
   <script>
     let isFlipped = false;
-    let currentDial = 1895;
     let currentQIndex = 0;
+    let hasBreached = false;
     const whatsappPhone = '966502777884';
 
-    // محرك المؤثرات الصوتية
-    function playSfx(type) {
+    // محرك صوتي محيطي سينمائي (Web Audio API)
+    function playCinematicFx(type) {
       if (!window.AudioContext && !window.webkitAudioContext) return;
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-      if (type === 'tick') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(320, ctx.currentTime);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.05);
-      } else if (type === 'door') {
+      if (type === 'scrape') {
+        // صوت احتكاك معدن الحربة أثناء السحب
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(140, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(45, ctx.currentTime + 1.2);
-        gain.gain.setValueAtTime(0.6, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.2);
+        osc.frequency.setValueAtTime(260 + Math.random() * 80, ctx.currentTime);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 1.2);
-      } else if (type === 'seal') {
+        osc.stop(ctx.currentTime + 0.04);
+      } else if (type === 'breach') {
+        // ارتطام الحربة القوي وانفراج الباب التراثي
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(35, ctx.currentTime + 0.7);
+        gain.gain.setValueAtTime(0.8, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.7);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.7);
+      } else if (type === 'gateOpen') {
+        // المؤثر السينمائي بعد الأسئلة: ريح صحراوية عميقة متبوعة بصرير الخشب
+        // 1. عمق الرياح (Sub-bass drone)
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(65, ctx.currentTime);
+        subOsc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 2.5);
+        subGain.gain.setValueAtTime(0.7, ctx.currentTime);
+        subGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2.5);
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+        subOsc.start();
+        subOsc.stop(ctx.currentTime + 2.5);
+
+        // 2. صرير الباب الخشبي الضخم بعد ثانية
+        setTimeout(() => {
+          const woodOsc = ctx.createOscillator();
+          const woodGain = ctx.createGain();
+          woodOsc.type = 'sawtooth';
+          woodOsc.frequency.setValueAtTime(95, ctx.currentTime);
+          woodOsc.frequency.linearRampToValueAtTime(120, ctx.currentTime + 1.2);
+          woodGain.gain.setValueAtTime(0.4, ctx.currentTime);
+          woodGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.2);
+          woodOsc.connect(woodGain);
+          woodGain.connect(ctx.destination);
+          woodOsc.start();
+          woodOsc.stop(ctx.currentTime + 1.2);
+        }, 600);
+      } else if (type === 'sealImpact') {
+        // صوت ضربة الختم الملكي
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(520, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.8);
+        osc.frequency.setValueAtTime(450, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.9);
         gain.gain.setValueAtTime(0.7, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.9);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.8);
+        osc.stop(ctx.currentTime + 0.9);
       }
     }
 
@@ -575,24 +626,28 @@
       }
     }
 
-    // 1. منطق القفل
-    function adjustDial(val) {
-      currentDial += val;
-      document.getElementById('dialYear').innerText = currentDial;
-      playSfx('tick');
-      if (navigator.vibrate) navigator.vibrate(30);
-    }
+    // 1. حركة سحب رأس الحربة إلى 1902
+    function handleSpearMove(val) {
+      if (hasBreached) return;
+      document.getElementById('spearYear').innerText = val;
+      playCinematicFx('scrape');
 
-    function verifyDial() {
-      if (currentDial === 1902) {
-        playSfx('door');
-        if (navigator.vibrate) navigator.vibrate([80, 50, 150]);
-        document.getElementById('systemStatusText').innerText = "تم فك القفل: عام 1902م";
-        document.getElementById('stageDialBox').style.display = 'none';
-        document.getElementById('stageQuestionsBox').style.display = 'flex';
-        renderQuestion();
-      } else {
-        alert("القفل لم يتحرك! ابحث عن عام فجر استرداد المصمك التاريخي.");
+      if (parseInt(val) === 1902) {
+        hasBreached = true;
+        // تأثير هزة الشاشة واهتزاز الجوال الحقيقي
+        document.getElementById('pageBody').classList.add('shake-active');
+        setTimeout(() => document.getElementById('pageBody').classList.remove('shake-active'), 400);
+
+        playCinematicFx('breach');
+        if (navigator.vibrate) navigator.vibrate([120, 60, 200]);
+
+        document.getElementById('systemStatusText').innerText = "تم اختراق الباب برأس الحربة: 1902م";
+        
+        setTimeout(() => {
+          document.getElementById('stageSpearBox').style.display = 'none';
+          document.getElementById('stageQuestionsBox').style.display = 'flex';
+          renderQuestion();
+        }, 700);
       }
     }
 
@@ -666,19 +721,21 @@
       const item = masmakFacts[currentQIndex];
       if (selectedIdx === item.ans) {
         btnElement.classList.add('correct');
-        playSfx('tick');
-        if (navigator.vibrate) navigator.vibrate(60);
+        playCinematicFx('scrape');
+        if (navigator.vibrate) navigator.vibrate(50);
 
         setTimeout(() => {
           currentQIndex++;
           if (currentQIndex < masmakFacts.length) {
             renderQuestion();
           } else {
-            // إتمام الـ 5 أسئلة
-            playSfx('seal');
+            // إتمام الـ 5 أسئلة: تشغيل المشهد السينمائي للرياح وفتح الباب
+            playCinematicFx('gateOpen');
+            if (navigator.vibrate) navigator.vibrate([100, 80, 250]);
+
             document.getElementById('stageQuestionsBox').style.display = 'none';
             document.getElementById('stageSealBox').style.display = 'flex';
-            document.getElementById('systemStatusText').innerText = "تم إثبات الأهلية التاريخية ✓";
+            document.getElementById('systemStatusText').innerText = "فُتحت أبواب الحصن بالكامل ✓";
           }
         }, 400);
       } else {
@@ -693,15 +750,15 @@
       const input = document.getElementById('ownerInputName');
       const name = input.value.trim() ? input.value.trim() : 'نبيل النمر';
 
-      playSfx('seal');
-      if (navigator.vibrate) navigator.vibrate([120, 80, 250]);
+      playCinematicFx('sealImpact');
+      if (navigator.vibrate) navigator.vibrate([150, 70, 300]);
 
       document.getElementById('displayOwner').innerText = name;
       document.getElementById('stageSealBox').style.display = 'none';
       document.getElementById('finalPass').style.display = 'block';
       document.getElementById('systemStatusText').innerText = "تم توثيق المقتني بنجاح ✓";
 
-      const message = `مرحباً، اجتزت بنجاح فك قفل عام 1902م والأسئلة الخمسة لإصدار (قصر المصمك - الإصدار التفاعلي NFC).
+      const message = `مرحباً، اجتزت بنجاح اقتحام باب المصمك والأسئلة التاريخية الخمسة لإصدار (قصر المصمك - الإصدار التفاعلي NFC).
 الاسم المعتمد على وثيقة الملكية: ${name}
 الرمز التسلسلي: MSMK-1902/VAULT
 أود تأكيد مقاسي وحجز قطعتي.`;
