@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>قصر المصمك | الكتالوج التفاعلي الذكي</title>
   
-  <!-- خط تجوال العربي الفاخر -->
+  <!-- خط تجوال العربي -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
@@ -91,7 +91,7 @@
       letter-spacing: 1px;
     }
 
-    /* مسرح استعراض التيشيرت */
+    /* منصة عرض التيشيرت */
     .product-stage {
       position: relative;
       background: var(--card-bg);
@@ -157,7 +157,7 @@
       cursor: pointer;
     }
 
-    /* مستشار المظهر الذكي (AI Stylist) */
+    /* مستشار المظهر الذكي */
     .stylist-container {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -275,7 +275,7 @@
       line-height: 1.35;
     }
 
-    /* اختيار المقاس */
+    /* مقاسات التيشيرت */
     .size-picker {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -353,7 +353,7 @@
 
   <div class="app-container">
     
-    <!-- شريط توثيق الشريحة الذكية -->
+    <!-- شريط التوثيق NFC -->
     <div class="nfc-banner">
       <div class="nfc-badge">
         <span class="pulse-dot"></span>
@@ -362,17 +362,17 @@
       <span class="serial-number">MASMAK-001/EZWA</span>
     </div>
 
-    <!-- منصة العرض الحركية للتيشيرت -->
+    <!-- منصة التيشيرت الحركية -->
     <div class="product-stage">
       <div class="tshirt-viewport">
         <div class="tshirt-card" id="tshirtCard">
-          <!-- الوجه الأمامي (الصدر) -->
+          <!-- الوجه الأمامي (front.jpeg) -->
           <div class="tshirt-side front">
-            <img id="frontImg" src="تيرت ظ (2).jpeg" alt="واجهة تيشيرت قصر المصمك">
+            <img id="frontImg" src="front.jpeg" alt="واجهة تيشيرت قصر المصمك">
           </div>
-          <!-- الوجه الخلفي (الظهر) -->
+          <!-- الوجه الخلفي (back.jpeg) -->
           <div class="tshirt-side back">
-            <img id="backImg" src="تيرت ظ (1).jpeg" alt="ظهر تيشيرت قصر المصمك">
+            <img id="backImg" src="back.jpeg" alt="ظهر تيشيرت قصر المصمك">
           </div>
         </div>
       </div>
@@ -401,7 +401,7 @@
 
       <!-- كبسولة الإكسسوارات وسير الساعة والمحفظة -->
       <div class="capsule-grid" id="capsuleContent">
-        <!-- يتم التحديث تلقائياً -->
+        <!-- تحديث ديناميكي -->
       </div>
     </div>
 
@@ -431,8 +431,9 @@
     let currentVibe = 'luxury';
     let currentSize = 'M';
     const whatsappPhone = '966502777884';
+    let currentAudio = null;
 
-    // نصوص النطق الصوتي العربي لكل طابع
+    // نصوص النطق العربي
     const speechMessages = {
       luxury: "لطلة فخمة، نسق تيشيرت قصر المصمك مع سير ساعة معدني ذهبي ومحفظة جلد أسود فاخر لإبراز تفاصيل الذهب المطفي.",
       casual: "لطلعة كاجوال نهارية، نقترح سير ساعة جلد جملي وبنطال رملي ليتماشى مع نقوش السدو التراثية ولون طين المصمك.",
@@ -521,21 +522,19 @@
       }
     };
 
-    // دالة النطق الصوتي العربي عبر المتصفح
+    // دالة الصوت المباشرة (تعمل على كل الأجهزة واللابتوب فوراً)
     function speakArabic(text) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.95;
-      utterance.pitch = 1.0;
-
-      const voices = window.speechSynthesis.getVoices();
-      const arabicVoice = voices.find(v => v.lang.startsWith('ar'));
-      if (arabicVoice) {
-        utterance.voice = arabicVoice;
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
       }
-      window.speechSynthesis.speak(utterance);
+      const encoded = encodeURIComponent(text);
+      const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=ar&client=tw-ob`;
+      
+      currentAudio = new Audio(audioUrl);
+      currentAudio.play().catch(e => {
+        console.log("انقر على زر السماعة لتشغيل الصوت يدوياً:", e);
+      });
     }
 
     function playCurrentVibeAudio() {
@@ -564,7 +563,6 @@
 
       const data = stylingData[vibeKey];
 
-      // تقليب التيشيرت تلقائياً
       const card = document.getElementById('tshirtCard');
       const label = document.getElementById('flipLabel');
       isFlipped = data.flipToBack;
@@ -577,8 +575,6 @@
 
       renderCapsule(data.capsule);
       updateWhatsappLink();
-
-      // تشغيل الصوت العربي فور الضغط على الطابع
       speakArabic(speechMessages[vibeKey]);
     }
 
@@ -620,7 +616,7 @@
       document.getElementById('whatsappOrderBtn').href = `https://wa.me/${whatsappPhone}?text=${encoded}`;
     }
 
-    // التهيئة التلقائية عند الفتح
+    // التهيئة التلقائية
     renderCapsule(stylingData.luxury.capsule);
     updateWhatsappLink();
   </script>
